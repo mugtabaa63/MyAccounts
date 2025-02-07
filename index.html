@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ربط مع بوت ديسكورد</title>
+</head>
+<body>
+    <h1>مرحبًا بك في صفحة التكتات</h1>
+    <button id="create-ticket">إنشاء تكت</button>
+
+    <script>
+        document.getElementById("create-ticket").addEventListener("click", function() {
+            // طلب ID المستخدم داخل ديسكورد
+            const userId = prompt("أدخل ID الخاص بك في ديسكورد:");
+
+            // التأكد من أن المستخدم أدخل ID صحيح
+            if (userId) {
+                fetch("http://localhost:3000/create-ticket", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ userId: userId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message); // عرض رسالة النجاح أو الخطأ
+                    }
+                })
+                .catch(error => {
+                    console.error("خطأ في الطلب:", error);
+                    alert("حدث خطأ أثناء محاولة إنشاء التكت.");
+                });
+            } else {
+                alert("لم يتم إدخال المعرف!");
+            }
+        });
+    </script>
+</body>
+</html>
